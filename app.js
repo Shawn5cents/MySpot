@@ -5,13 +5,15 @@ document.addEventListener('DOMContentLoaded', function() {
     initApp();
     
     // Initialize new components
-    initQuickActions();
     initWebApps();
     initAIAssistants();
     initCommandCenter();
 });
 
 function initApp() {
+    // Initialize navigation
+    initNavigation();
+    
     // Initialize search functionality
     initSearch();
     
@@ -27,42 +29,130 @@ function initApp() {
     console.log('MySpot application initialized');
 }
 
-// Initialize Quick Actions
-function initQuickActions() {
-    const quickActionCards = document.querySelectorAll('.quick-action-card');
+// Initialize navigation with smooth scrolling
+function initNavigation() {
+    const navLinks = document.querySelectorAll('nav ul li a');
     
-    quickActionCards.forEach(card => {
-        card.addEventListener('click', function() {
-            const actionTitle = this.querySelector('h3').textContent;
-            console.log(`Quick action clicked: ${actionTitle}`);
-            showNotification(`Opening ${actionTitle}`, 'info');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const sectionId = this.getAttribute('href').substring(1);
+            const section = document.getElementById(sectionId);
+            
+            if (section) {
+                section.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                showNotification(`Navigating to ${this.textContent}`, 'info');
+            }
         });
     });
+}
+
+function showEmailPreview() {
+    // Create email preview container
+    const previewContainer = document.createElement('div');
+    previewContainer.className = 'email-preview';
+    previewContainer.innerHTML = `
+        <div style="
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        ">
+            <div style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1rem;
+            ">
+                <h3>Email Preview</h3>
+                <button onclick="window.open('https://gmail.com', '_blank')" 
+                        style="
+                            background: var(--gmail-color);
+                            color: white;
+                            border: none;
+                            padding: 0.5rem 1rem;
+                            border-radius: 4px;
+                            cursor: pointer;
+                        ">
+                    Open Gmail
+                </button>
+            </div>
+            <div style="
+                display: grid;
+                gap: 1rem;
+            ">
+                <div style="
+                    background: var(--bg-tertiary);
+                    padding: 1rem;
+                    border-radius: 4px;
+                    border-left: 4px solid var(--gmail-color);
+                ">
+                    <div style="font-weight: bold;">Project Update</div>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem;">From: Sarah Johnson</div>
+                    <div style="color: var(--text-secondary); margin-top: 0.5rem;">Latest changes to the dashboard design...</div>
+                </div>
+                <div style="
+                    background: var(--bg-tertiary);
+                    padding: 1rem;
+                    border-radius: 4px;
+                    border-left: 4px solid var(--warning);
+                ">
+                    <div style="font-weight: bold;">Budget Review Meeting</div>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem;">From: Finance Team</div>
+                    <div style="color: var(--text-secondary); margin-top: 0.5rem;">Quarterly budget review scheduled for...</div>
+                </div>
+                <div style="
+                    background: var(--bg-tertiary);
+                    padding: 1rem;
+                    border-radius: 4px;
+                    border-left: 4px solid var(--info);
+                ">
+                    <div style="font-weight: bold;">Weekly Newsletter</div>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem;">From: Company Updates</div>
+                    <div style="color: var(--text-secondary); margin-top: 0.5rem;">This week's highlights and announcements...</div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Add preview to the command response
+    const responseContainer = document.querySelector('.command-response');
+    responseContainer.appendChild(previewContainer);
 }
 
 // Initialize Web Applications
 function initWebApps() {
     const webAppCards = document.querySelectorAll('.web-app-card');
-    const launchButtons = document.querySelectorAll('.launch-btn');
     
     webAppCards.forEach(card => {
+        const launchBtn = card.querySelector('.launch-btn');
+        const appTitle = card.querySelector('.card-title').textContent;
+        
+        // Handle card click
         card.addEventListener('click', function(e) {
             // Don't trigger if the launch button was clicked
             if (e.target.closest('.launch-btn')) return;
             
-            const appTitle = this.querySelector('.web-app-title').textContent;
-            console.log(`Web app clicked: ${appTitle}`);
-            showNotification(`Opening ${appTitle}`, 'info');
+            if (appTitle === 'Cloudy') {
+                window.open('https://cloudy-2cj.pages.dev/', '_blank');
+            } else if (appTitle === 'Filic Express') {
+                window.open('https://www.filicexpress.com/drivers/index.php', '_blank');
+            } else if (appTitle === 'RocketMoney') {
+                window.open('https://www.rocketmoney.com/', '_blank');
+            }
+            showNotification(`Opening ${appTitle}`, 'success');
         });
-    });
-    
-    launchButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const appTitle = this.closest('.card').querySelector('.card-title').textContent;
-            console.log(`Launching ${appTitle}`);
-            showNotification(`Launching ${appTitle}`, 'success');
-        });
+        
+        // Handle launch button click
+        if (launchBtn) {
+            launchBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showNotification(`Launching ${appTitle}`, 'success');
+            });
+        }
     });
 }
 
@@ -74,18 +164,28 @@ function initAIAssistants() {
         const launchBtn = card.querySelector('.launch-btn');
         const aiTitle = card.querySelector('.card-title').textContent;
 
+        const appURL = {
+            'Claude': '#', // Replace with actual Claude URL if available
+            'Gemini': '#', // Replace with actual Gemini URL if available
+            'ChatGPT': '#'  // Replace with actual ChatGPT URL if available
+        };
+
         // Handle launch button click
         launchBtn.addEventListener('click', function(e) {
             e.preventDefault();
             console.log(`Launching ${aiTitle}`);
             
-            if (aiTitle === 'Gemini') {
+            if (appURL[aiTitle]) {
+                window.open(appURL[aiTitle], '_blank');
+                showNotification(`Launching ${aiTitle}`, 'success');
+            } else if (aiTitle === 'Gemini') {
                 // Show the command center for Gemini
                 const commandCenter = document.querySelector('.command-center');
                 commandCenter.style.display = 'block';
                 commandCenter.scrollIntoView({ behavior: 'smooth' });
                 showNotification('Gemini AI ready to help', 'success');
-            } else {
+            }
+             else {
                 showNotification(`${aiTitle} integration coming soon`, 'info');
             }
         });
@@ -118,9 +218,9 @@ function initCommandCenter() {
 }
 
 // API keys and configuration are loaded from config.js
-const GEMINI_API_KEY = config.GEMINI_API_KEY;
-const MODEL_NAME = config.MODEL_NAME;
-const OPENWEATHER_API_KEY = config.OPENWEATHER_API_KEY;
+const GEMINI_API_KEY = window.config.GEMINI_API_KEY;
+const MODEL_NAME = window.config.MODEL_NAME;
+const OPENWEATHER_API_KEY = window.config.OPENWEATHER_API_KEY;
 
 async function processCommand(command) {
     if (!command.trim()) {
@@ -141,6 +241,12 @@ async function processCommand(command) {
     try {
         if (command.toLowerCase().includes('weather')) {
             await getWeather(responseContainer);
+        } else if (command.toLowerCase().includes('calendar')) {
+            updateCommandResponse('calendar');
+        } else if (command.toLowerCase().includes('email')) {
+            updateCommandResponse('email');
+        } else if (command.toLowerCase().includes('drive') || command.toLowerCase().includes('files')) {
+            updateCommandResponse('drive');
         } else {
             const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`, {
                 method: 'POST',
@@ -186,6 +292,100 @@ async function processCommand(command) {
         `;
         showNotification('Error processing request', 'warning');
     }
+}
+
+function updateCommandResponse(type) {
+    const responseContainer = document.querySelector('.command-response');
+    
+    // Get today's date for calendar events
+    const today = new Date();
+    const options = { weekday: 'long', month: 'long', day: 'numeric' };
+    const dateString = today.toLocaleDateString('en-US', options);
+    
+    switch(type) {
+        case 'calendar':
+            responseContainer.innerHTML = `
+                <h3>Your Calendar for ${dateString}:</h3>
+                <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                    <div style="border-left: 4px solid var(--calendar-color); padding: 0.5rem 1rem; margin: 0.5rem 0;">
+                        <div style="font-weight: bold;">10:00 AM - Project Horizon Kickoff</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Virtual Meeting - Zoom</div>
+                    </div>
+                    <div style="border-left: 4px solid var(--info); padding: 0.5rem 1rem; margin: 0.5rem 0;">
+                        <div style="font-weight: bold;">1:30 PM - Lunch with Alex</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Fusion Bistro</div>
+                    </div>
+                    <div style="border-left: 4px solid var(--success); padding: 0.5rem 1rem; margin: 0.5rem 0;">
+                        <div style="font-weight: bold;">4:00 PM - Quarterly Review</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Conference Room A</div>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <button onclick="window.open('https://calendar.google.com/calendar/u/0/r?pli=1', '_blank')"
+                            style="background: var(--calendar-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+                        Open in Google Calendar
+                    </button>
+                </div>
+            `;
+            break;
+        case 'email':
+            responseContainer.innerHTML = `
+                <h3>Recent Emails:</h3>
+                <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                    <div style="border-left: 4px solid var(--gmail-color); padding: 0.5rem 1rem; margin: 0.5rem 0;">
+                        <div style="font-weight: bold;">Project Update from Sarah</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">10 minutes ago</div>
+                    </div>
+                    <div style="border-left: 4px solid var(--warning); padding: 0.5rem 1rem; margin: 0.5rem 0;">
+                        <div style="font-weight: bold;">Meeting Invitation: Budget Review</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">1 hour ago</div>
+                    </div>
+                    <div style="border-left: 4px solid var(--info); padding: 0.5rem 1rem; margin: 0.5rem 0;">
+                        <div style="font-weight: bold;">Weekly Newsletter</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">3 hours ago</div>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <button onclick="window.open('https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox', '_blank')"
+                            style="background: var(--gmail-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+                        Open Gmail
+                    </button>
+                </div>
+            `;
+            break;
+        case 'drive':
+            responseContainer.innerHTML = `
+                <h3>Recent Files:</h3>
+                <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                    <div style="border-left: 4px solid var(--drive-color); padding: 0.5rem 1rem; margin: 0.5rem 0;">
+                        <div style="font-weight: bold;">Project Proposal.docx</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Modified 2 hours ago</div>
+                    </div>
+                    <div style="border-left: 4px solid var(--drive-color); padding: 0.5rem 1rem; margin: 0.5rem 0;">
+                        <div style="font-weight: bold;">Q1 Results.xlsx</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Modified yesterday</div>
+                    </div>
+                    <div style="border-left: 4px solid var(--drive-color); padding: 0.5rem 1rem; margin: 0.5rem 0;">
+                        <div style="font-weight: bold;">Team Meeting Notes.pdf</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Modified 2 days ago</div>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <button onclick="window.open('https://drive.google.com', '_blank')" 
+                            style="background: var(--drive-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+                        Open Google Drive
+                    </button>
+                </div>
+            `;
+            break;
+        default:
+            responseContainer.innerHTML = `
+                <h3>I'm not sure how to help with that.</h3>
+                <p>Try asking about your calendar, emails, or the weather.</p>
+            `;
+    }
+    
+    showNotification('Information retrieved successfully', 'success');
 }
 
 // Get background color based on temperature
@@ -308,7 +508,6 @@ function formatResponse(text) {
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
         .replace(/^- (.+)$/gm, '• $1'); // Convert markdown lists to bullets
-
 }
 
 function escapeHtml(text) {
@@ -318,50 +517,6 @@ function escapeHtml(text) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
-}
-
-function updateCommandResponse(type) {
-    const responseContainer = document.querySelector('.command-response');
-    
-    switch(type) {
-        case 'calendar':
-            responseContainer.innerHTML = `
-                <h3>Your schedule for today:</h3>
-                <ul>
-                    <li>10:00 AM - Project Horizon kickoff meeting</li>
-                    <li>1:30 PM - Lunch with Alex at Fusion Bistro</li>
-                    <li>4:00 PM - Quarterly review with the team</li>
-                </ul>
-            `;
-            break;
-        case 'email':
-            responseContainer.innerHTML = `
-                <h3>Your recent emails:</h3>
-                <ul>
-                    <li>Project Update from Sarah (10 min ago)</li>
-                    <li>Meeting Invitation: Budget Review (1 hour ago)</li>
-                    <li>Weekly Newsletter (3 hours ago)</li>
-                </ul>
-            `;
-            break;
-        case 'weather':
-            responseContainer.innerHTML = `
-                <h3>Current Weather:</h3>
-                <ul>
-                    <li>Temperature: 72°F / 22°C</li>
-                    <li>Condition: Partly Cloudy</li>
-                    <li>Forecast: Clear skies expected later today</li>
-                </ul>
-            `;
-            break;
-        default:
-            responseContainer.innerHTML = `
-                <h3>I'm not sure how to help with that.</h3>
-                <p>Try asking about your calendar, emails, or the weather.</p>
-            `;
-    }
-    
-    showNotification('Command processed successfully', 'success');
 }
 
 function initSearch() {

@@ -24,3 +24,6 @@ jobs:
           projectName: myspot
           directory: ./
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}

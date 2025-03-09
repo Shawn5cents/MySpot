@@ -462,7 +462,6 @@
         <div class="logo">MySpot</div>
         <nav>
             <ul>
-                <li><a href="#dashboard">Dashboard</a></li>
                 <li><a href="#apps">Apps</a></li>
                 <li><a href="#ai">AI Tools</a></li>
                 <li><a href="#settings">Settings</a></li>
@@ -476,75 +475,100 @@
             <button>Search</button>
         </div>
 
-        <section class="quick-actions">
-            <h2 class="section-title">Quick Actions</h2>
-            <div class="quick-action-grid">
-                <div class="quick-action-card">
-                    <div class="quick-action-icon gmail-icon">
-                        <i class="fas fa-envelope"></i>
+        <section id="apps" class="apps">
+            <h2 class="section-title">Apps</h2>
+            <div class="grid-container">
+                <div class="card web-app-card">
+                    <div class="card-header">
+                        <div class="ai-icon" style="background-color: var(--info);">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <div class="card-title">Cloudy</div>
                     </div>
-                    <h3>Gmail</h3>
+                    <div class="card-content">
+                        <p class="card-description">Weather app with beautiful visualizations</p>
+                        <a href="https://cloudy-2cj.pages.dev/" class="launch-btn" target="_blank">Launch <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
-                <div class="quick-action-card">
-                    <div class="quick-action-icon drive-icon">
-                        <i class="fas fa-hard-drive"></i>
+                <div class="card web-app-card">
+                    <div class="card-header">
+                        <div class="ai-icon" style="background-color: var(--success);">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="card-title">RocketMoney</div>
                     </div>
-                    <h3>Drive</h3>
+                    <div class="card-content">
+                        <p class="card-description">Smart money management and bill negotiation</p>
+                        <a href="https://www.rocketmoney.com/" class="launch-btn" target="_blank">Launch <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
-                <div class="quick-action-card">
-                    <div class="quick-action-icon calendar-icon">
-                        <i class="fas fa-calendar"></i>
+                <div class="card web-app-card">
+                    <div class="card-header">
+                        <div class="ai-icon" style="background-color: var(--success);">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="card-title">Filic Express</div>
                     </div>
-                    <h3>Calendar</h3>
+                    <div class="card-content">
+                        <p class="card-description">Express delivery and driver services</p>
+                        <a href="https://www.filicexpress.com/drivers/index.php" class="launch-btn" target="_blank">Launch <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
-                <div class="quick-action-card">
-                    <div class="quick-action-icon assistant-icon">
-                        <i class="fas fa-robot"></i>
+                <div class="card web-app-card">
+                    <div class="card-header">
+                        <div class="ai-icon" style="background-color: var(--accent-primary);">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <div class="card-title">Popz Place</div>
                     </div>
-                    <h3>AI Assistant</h3>
+                    <div class="card-content">
+                        <p class="card-description">Online store and marketplace</p>
+                        <a href="https://popzplace.com/" class="launch-btn" target="_blank">Launch <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card web-app-card">
+                    <div class="card-header">
+                        <div class="ai-icon" style="background-color: var(--google-color);">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <div class="card-title">Google</div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">Search engine and web services</p>
+                        <a href="https://www.google.com/" class="launch-btn" target="_blank">Launch <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card web-app-card">
+                    <div class="card-header">
+                        <div class="ai-icon" style="background-color: #333;">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <div class="card-title">GitHub</div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">Access your code repositories and collaborate with developers</p>
+                        <a href="https://github.com/" class="launch-btn" target="_blank">Launch <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card web-app-card">
+                    <div class="card-header">
+                        <div class="ai-icon" style="background-color: var(--info);">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="card-title">Navy Federal</div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">Online banking and financial services</p>
+                        <a href="https://digitalapps.navyfederal.org/signin/" class="launch-btn" target="_blank">Launch <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="ai-tools">
-            <h2 class="section-title">AI Assistants</h2>
+        <section id="ai" class="ai">
+            <h2 class="section-title">AI Tools</h2>
             <div class="grid-container">
-                <div class="card ai-assistant-card">
-                    <div class="card-header">
-                        <div class="ai-icon claude-icon">
-                            <i class="fas fa-brain"></i>
-                        </div>
-                        <div class="card-title">Claude</div>
-                    </div>
-                    <div class="card-content">
-                        <p class="card-description">Advanced AI for analysis and content creation</p>
-                        <a href="#" class="launch-btn">Launch <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-                <div class="card ai-assistant-card">
-                    <div class="card-header">
-                        <div class="ai-icon gemini-icon">
-                            <i class="fas fa-sparkles"></i>
-                        </div>
-                        <div class="card-title">Gemini</div>
-                    </div>
-                    <div class="card-content">
-                        <p class="card-description">Google's multimodal AI assistant</p>
-                        <a href="#" class="launch-btn">Launch <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-                <div class="card ai-assistant-card">
-                    <div class="card-header">
-                        <div class="ai-icon chatgpt-icon">
-                            <i class="fas fa-comment-dots"></i>
-                        </div>
-                        <div class="card-title">ChatGPT</div>
-                    </div>
-                    <div class="card-content">
-                        <p class="card-description">Conversational AI powered by OpenAI</p>
-                        <a href="#" class="launch-btn">Launch <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
+                <!-- AI assistants will be added here -->
             </div>
         </section>
 
@@ -566,6 +590,26 @@
                     <li>Check my recent emails</li>
                     <li>What's the weather like?</li>
                 </ul>
+            </div>
+        </section>
+
+        <section id="settings" class="settings">
+            <h2 class="section-title">Settings</h2>
+            <div class="grid-container">
+                <div class="card settings-card">
+                    <div class="card-header">
+                        <div class="ai-icon" style="background-color: var(--text-secondary);">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <div class="card-title">Theme</div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">Switch between light and dark mode</p>
+                        <button id="theme-toggle" class="launch-btn">
+                            Toggle Theme <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
     </main>

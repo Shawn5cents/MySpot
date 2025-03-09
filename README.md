@@ -4,12 +4,19 @@ MySpot is a modern web application that serves as your personal digital hub. It 
 
 ## Features
 
-- **Dashboard**: Quick overview of your digital activities
-- **Bookmarks**: Save and organize your favorite websites
-- **Notes**: Keep track of your ideas and important information
-- **Tasks**: Manage your to-do list and track your progress
-- **Search**: Find anything across your digital hub quickly
-- **Dark/Light Mode**: Toggle between dark and light themes
+- **Apps Section**: Integration with various web applications
+    - Cloudy Weather App
+    - Filic Express
+    - Popz Place
+    - Google Search
+    - Navy Federal Bank
+- **AI Tools Section**: Access to AI Assistants
+    - Claude
+    - Gemini
+    - ChatGPT AI Assistants
+- **Command Center**: Interact with AI and get responses
+- **Settings**: Theme customization (Dark/Light Mode)
+- **Search**: Basic search functionality
 - **Responsive Design**: Works on desktop and mobile devices
 
 ## Technologies Used
@@ -21,9 +28,41 @@ MySpot is a modern web application that serves as your personal digital hub. It 
 
 ## Getting Started
 
-1. Clone this repository
-2. Open `index.html` in your browser
-3. Start using MySpot to organize your digital life
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/Shawn5cents/MySpot.git
+   cd MySpot
+   ```
+
+2. Configure the application:
+   - Copy `config.template.js` to `config.js`
+   - Update the API keys in `config.js` with your own:
+     - GEMINI_API_KEY for AI features
+     - OPENWEATHER_API_KEY for weather functionality
+
+3. Start the application:
+   - For development:
+     ```bash
+     npx http-server . --port 8080
+     ```
+   - Or simply open `index.html` in your browser
+
+4. Access MySpot at http://localhost:8080 (if using http-server)
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/YourFeature`
+3. Commit your changes: `git commit -am 'Add YourFeature'`
+4. Push to the branch: `git push origin feature/YourFeature`
+5. Submit a pull request
+
+### Development Guidelines
+
+- Follow the existing code style and conventions
+- Test your changes thoroughly
+- Update documentation as needed
+- Keep pull requests focused on a single feature or fix
 
 ## Project Structure
 
@@ -32,12 +71,11 @@ MySpot is a modern web application that serves as your personal digital hub. It 
 
 ## Future Enhancements
 
-- User authentication and profiles
-- Cloud synchronization
-- Customizable widgets
-- Calendar integration
-- File storage and management
-- Browser extension for quick access
+- Enhanced AI Command Center features
+- More app integrations
+- User-specific settings and customization
+- Improved search functionality
+- Advanced UI components and interactions
 
 ## License
 
