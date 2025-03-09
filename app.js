@@ -136,14 +136,22 @@ function initWebApps() {
             // Don't trigger if the launch button was clicked
             if (e.target.closest('.launch-btn')) return;
             
-            if (appTitle === 'Cloudy') {
-                window.open('https://cloudy-2cj.pages.dev/', '_blank');
-            } else if (appTitle === 'Filic Express') {
-                window.open('https://www.filicexpress.com/drivers/index.php', '_blank');
-            } else if (appTitle === 'RocketMoney') {
-                window.open('https://www.rocketmoney.com/', '_blank');
+            const appURLs = {
+                'Cloudy': 'https://cloudy-2cj.pages.dev/',
+                'Filic Express': 'https://www.filicexpress.com/drivers/index.php',
+                'RocketMoney': 'https://www.rocketmoney.com/',
+                'PopzPlace': 'https://popzplace.com/',
+                'Google': 'https://www.google.com/',
+                'Navy Federal': 'https://www.navyfederal.org/',
+                'GitHub': 'https://github.com/'
+            };
+            
+            if (appURLs[appTitle]) {
+                window.open(appURLs[appTitle], '_blank');
+                showNotification(`Opening ${appTitle}`, 'success');
+            } else {
+                showNotification(`Unable to open ${appTitle}`, 'error');
             }
-            showNotification(`Opening ${appTitle}`, 'success');
         });
         
         // Handle launch button click
