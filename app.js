@@ -400,7 +400,7 @@ async function getWeather(responseContainer) {
 
         // Fetch weather data from OpenWeatherMap API
         const response = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${OPENWEATHER_API_KEY}&units=metric`
+            `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${OPENWEATHER_API_KEY}&units=imperial`
         );
 
         if (!response.ok) {
@@ -409,9 +409,9 @@ async function getWeather(responseContainer) {
 
         const data = await response.json();
 
-        // Convert temperature to both Celsius and Fahrenheit
-        const tempC = Math.round(data.main.temp);
-        const tempF = Math.round((tempC * 9/5) + 32);
+        // Get temperatures (API now returns Fahrenheit)
+        const tempF = Math.round(data.main.temp);
+        const tempC = Math.round((tempF - 32) * 5/9);
         
         // Get weather icon
         const iconCode = data.weather[0].icon;
@@ -470,7 +470,7 @@ async function getWeather(responseContainer) {
                     <div>
                         <i class="fas fa-thermometer-half" style="font-size: 1.2rem; margin-bottom: 0.5rem;"></i>
                         <div style="font-size: 0.8rem; opacity: 0.9;">Feels like</div>
-                        <div style="font-weight: 600;">${Math.round((data.main.feels_like * 9/5) + 32)}°F</div>
+                        <div style="font-weight: 600;">${Math.round(data.main.feels_like)}°F</div>
                     </div>
                     <div>
                         <i class="fas fa-tint" style="font-size: 1.2rem; margin-bottom: 0.5rem;"></i>
