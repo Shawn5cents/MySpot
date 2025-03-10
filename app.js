@@ -225,10 +225,10 @@ function initCommandCenter() {
 }
 
 // API key configuration is loaded from config.js
-const OPENWEATHER_API_KEY = config.OPENWEATHER_API_KEY;
+const OPENWEATHER_API_KEY = window.config.OPENWEATHER_API_KEY;
 
 // Validate OpenWeather API key
-if (!OPENWEATHER_API_KEY || OPENWEATHER_API_KEY === 'your_openweather_api_key_here') {
+if (!OPENWEATHER_API_KEY) {
     console.error('Please configure your OpenWeather API key in config.js');
 }
 
