@@ -29,7 +29,6 @@
             --slack-color: #4A154B;
             --dropbox-color: #0061FF;
             --claude-color: #8338ec;
-            --gemini-color: #f72585;
             --chatgpt-color: #19C37D;
         }
         
@@ -294,10 +293,6 @@
             background-color: var(--claude-color);
         }
         
-        .gemini-icon {
-            background-color: var(--gemini-color);
-        }
-        
         .chatgpt-icon {
             background-color: var(--chatgpt-color);
         }
@@ -492,6 +487,18 @@
                 </div>
                 <div class="card web-app-card">
                     <div class="card-header">
+                        <div class="ai-icon" style="background-color: #000000;">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="card-title">Notion</div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">All-in-one workspace for notes, docs & collaboration</p>
+                        <a href="https://www.notion.com/" class="launch-btn" target="_blank">Launch <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card web-app-card">
+                    <div class="card-header">
                         <div class="ai-icon" style="background-color: var(--success);">
                             <i class="fas fa-wallet"></i>
                         </div>
@@ -512,18 +519,6 @@
                     <div class="card-content">
                         <p class="card-description">Express delivery and driver services</p>
                         <a href="https://www.filicexpress.com/drivers/index.php" class="launch-btn" target="_blank">Launch <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-                <div class="card web-app-card">
-                    <div class="card-header">
-                        <div class="ai-icon" style="background-color: var(--accent-primary);">
-                            <i class="fas fa-store"></i>
-                        </div>
-                        <div class="card-title">Popz Place</div>
-                    </div>
-                    <div class="card-content">
-                        <p class="card-description">Online store and marketplace</p>
-                        <a href="https://popzplace.com/" class="launch-btn" target="_blank">Launch <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
                 <div class="card web-app-card">
@@ -568,7 +563,30 @@
         <section id="ai" class="ai">
             <h2 class="section-title">AI Tools</h2>
             <div class="grid-container">
-                <!-- AI assistants will be added here -->
+                <div class="card ai-assistant-card">
+                    <div class="card-header">
+                        <div class="ai-icon" style="background-color: var(--success);">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="card-title">Claude</div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">Advanced AI assistant for complex tasks</p>
+                        <a href="#" class="launch-btn">Launch <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card ai-assistant-card">
+                    <div class="card-header">
+                        <div class="ai-icon" style="background-color: var(--info);">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="card-title">Gemini</div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">Google's advanced AI model for versatile tasks</p>
+                        <a href="#" class="launch-btn">Launch <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
             </div>
         </section>
 

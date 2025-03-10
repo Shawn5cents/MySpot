@@ -12,7 +12,6 @@ MySpot is a modern web application that serves as your personal digital hub. It 
     - Navy Federal Bank
 - **AI Tools Section**: Access to AI Assistants
     - Claude
-    - Gemini
     - ChatGPT AI Assistants
 - **Command Center**: Interact with AI and get responses
 - **Settings**: Theme customization (Dark/Light Mode)
@@ -37,7 +36,6 @@ MySpot is a modern web application that serves as your personal digital hub. It 
 2. Configure the application:
    - Copy `config.template.js` to `config.js`
    - Update the API keys in `config.js` with your own:
-     - GEMINI_API_KEY for AI features
      - OPENWEATHER_API_KEY for weather functionality
 
 3. Start the application:

@@ -140,10 +140,10 @@ function initWebApps() {
                 'Cloudy': 'https://cloudy-2cj.pages.dev/',
                 'Filic Express': 'https://www.filicexpress.com/drivers/index.php',
                 'RocketMoney': 'https://www.rocketmoney.com/',
-                'PopzPlace': 'https://popzplace.com/',
                 'Google': 'https://www.google.com/',
                 'Navy Federal': 'https://www.navyfederal.org/',
-                'GitHub': 'https://github.com/'
+                'GitHub': 'https://github.com/',
+                'Notion': 'https://www.notion.com/'
             };
             
             if (appURLs[appTitle]) {
@@ -158,7 +158,12 @@ function initWebApps() {
         if (launchBtn) {
             launchBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                showNotification(`Launching ${appTitle}`, 'success');
+                if (appURLs[appTitle]) {
+                    window.open(appURLs[appTitle], '_blank');
+                    showNotification(`Launching ${appTitle}`, 'success');
+                } else {
+                    showNotification(`Unable to open ${appTitle}`, 'error');
+                }
             });
         }
     });
@@ -168,32 +173,26 @@ function initWebApps() {
 function initAIAssistants() {
     const aiCards = document.querySelectorAll('.ai-assistant-card');
     
+    // Define appURLs outside the event handlers so it's accessible to both
+    const appURLs = {
+        'Claude': 'https://claude.ai', 
+        'ChatGPT': 'https://chat.openai.com',
+        'Gemini': 'https://gemini.google.com/app'
+    };
+    
     aiCards.forEach(card => {
         const launchBtn = card.querySelector('.launch-btn');
         const aiTitle = card.querySelector('.card-title').textContent;
-
-        const appURL = {
-            'Claude': '#', // Replace with actual Claude URL if available
-            'Gemini': '#', // Replace with actual Gemini URL if available
-            'ChatGPT': '#'  // Replace with actual ChatGPT URL if available
-        };
 
         // Handle launch button click
         launchBtn.addEventListener('click', function(e) {
             e.preventDefault();
             console.log(`Launching ${aiTitle}`);
             
-            if (appURL[aiTitle]) {
-                window.open(appURL[aiTitle], '_blank');
+            if (appURLs[aiTitle]) {
+                window.open(appURLs[aiTitle], '_blank');
                 showNotification(`Launching ${aiTitle}`, 'success');
-            } else if (aiTitle === 'Gemini') {
-                // Show the command center for Gemini
-                const commandCenter = document.querySelector('.command-center');
-                commandCenter.style.display = 'block';
-                commandCenter.scrollIntoView({ behavior: 'smooth' });
-                showNotification('Gemini AI ready to help', 'success');
-            }
-             else {
+            } else {
                 showNotification(`${aiTitle} integration coming soon`, 'info');
             }
         });
@@ -225,10 +224,23 @@ function initCommandCenter() {
     });
 }
 
-// API keys and configuration are loaded from config.js
-const GEMINI_API_KEY = window.config.GEMINI_API_KEY;
-const MODEL_NAME = window.config.MODEL_NAME;
-const OPENWEATHER_API_KEY = window.config.OPENWEATHER_API_KEY;
+// API key configuration is loaded from config.js
+const OPENWEATHER_API_KEY = config.OPENWEATHER_API_KEY;
+
+// Validate OpenWeather API key
+if (!OPENWEATHER_API_KEY || OPENWEATHER_API_KEY === 'your_openweather_api_key_here') {
+    console.error('Please configure your OpenWeather API key in config.js');
+}
+
+// Function to determine background color based on temperature
+function getTempColor(tempC) {
+    if (tempC <= 0) return '#4cc9f0';   // Freezing
+    if (tempC <= 10) return '#4895ef';  // Cold
+    if (tempC <= 20) return '#4361ee';  // Cool
+    if (tempC <= 25) return '#7209b7';  // Mild
+    if (tempC <= 30) return '#f72585';  // Warm
+    return '#e85d04';                   // Hot
+}
 
 async function processCommand(command) {
     if (!command.trim()) {
@@ -256,39 +268,10 @@ async function processCommand(command) {
         } else if (command.toLowerCase().includes('drive') || command.toLowerCase().includes('files')) {
             updateCommandResponse('drive');
         } else {
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{
-                            text: command
-                        }]
-                    }],
-                    generationConfig: {
-                        temperature: 0.7,
-                        maxOutputTokens: 1024,
-                        topK: 40,
-                        topP: 0.95
-                    }
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error(`API request failed with status ${response.status}`);
-            }
-
-            const data = await response.json();
-            if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-                throw new Error('Invalid response format from API');
-            }
-
-            const generatedText = data.candidates[0].content.parts[0].text;
+            // Simple response for commands not specifically handled
             responseContainer.innerHTML = `
                 <h3>Response:</h3>
-                <div class="ai-response">${formatResponse(generatedText)}</div>
+                <div class="ai-response">I'm sorry, I don't have AI integration to process that request. Try asking about your calendar, emails, weather, or files.</div>
             `;
         }
         showNotification('Response received', 'success');
@@ -437,49 +420,103 @@ async function getWeather(responseContainer) {
         // Get background color based on temperature
         const bgColor = getTempColor(tempC);
         
-        // Format weather data with Cloudy app styling
+        // Get sunrise and sunset times
+        const sunrise = new Date(data.sys.sunrise * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const sunset = new Date(data.sys.sunset * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        
+        // Format weather data with enhanced Cloudy app styling
         responseContainer.innerHTML = `
             <div style="
-                background: ${bgColor};
+                background: linear-gradient(to bottom right, ${bgColor}, ${bgColor}dd);
                 padding: 2rem;
                 border-radius: 15px;
                 text-align: center;
                 color: white;
                 transition: background 0.3s ease;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             ">
-                <h2 style="font-size: 1.8rem; margin-bottom: 1rem;">${data.name}</h2>
-                <img src="${iconUrl}" alt="${data.weather[0].description}" style="width: 100px; height: 100px;">
-                <div style="font-size: 3rem; font-weight: bold; margin: 1rem 0;">
-                    ${tempF}°F
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 style="font-size: 1.8rem; margin-bottom: 1rem;">${data.name}</h2>
+                    <div style="font-size: 0.9rem; opacity: 0.9;">
+                        <i class="fas fa-map-marker-alt"></i> ${latitude.toFixed(2)}, ${longitude.toFixed(2)}
+                    </div>
                 </div>
-                <div style="font-size: 1.2rem; margin: 0.5rem 0; text-transform: capitalize;">
+                
+                <div style="display: flex; align-items: center; justify-content: center; margin: 1rem 0;">
+                    <img src="${iconUrl}" alt="${data.weather[0].description}" style="width: 120px; height: 120px;">
+                    <div style="text-align: left; margin-left: 1rem;">
+                        <div style="font-size: 3.5rem; font-weight: bold; line-height: 1;">
+                            ${tempF}°F
+                        </div>
+                        <div style="font-size: 1.2rem; opacity: 0.9;">
+                            ${tempC}°C
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="font-size: 1.4rem; margin: 0.5rem 0; text-transform: capitalize; font-weight: 500;">
                     ${data.weather[0].description}
                 </div>
+                
                 <div style="
                     display: grid;
-                    grid-template-columns: repeat(3, 1fr);
+                    grid-template-columns: repeat(4, 1fr);
                     gap: 1rem;
                     margin-top: 2rem;
-                    font-size: 0.9rem;
+                    background: rgba(255,255,255,0.1);
+                    border-radius: 10px;
+                    padding: 1rem;
                 ">
                     <div>
-                        <i class="fas fa-thermometer-half"></i>
-                        <div>Feels like</div>
-                        <div>${Math.round((data.main.feels_like * 9/5) + 32)}°F</div>
+                        <i class="fas fa-thermometer-half" style="font-size: 1.2rem; margin-bottom: 0.5rem;"></i>
+                        <div style="font-size: 0.8rem; opacity: 0.9;">Feels like</div>
+                        <div style="font-weight: 600;">${Math.round((data.main.feels_like * 9/5) + 32)}°F</div>
                     </div>
                     <div>
-                        <i class="fas fa-tint"></i>
-                        <div>Humidity</div>
-                        <div>${data.main.humidity}%</div>
+                        <i class="fas fa-tint" style="font-size: 1.2rem; margin-bottom: 0.5rem;"></i>
+                        <div style="font-size: 0.8rem; opacity: 0.9;">Humidity</div>
+                        <div style="font-weight: 600;">${data.main.humidity}%</div>
                     </div>
                     <div>
-                        <i class="fas fa-wind"></i>
-                        <div>Wind</div>
-                        <div>${Math.round(data.wind.speed * 2.237)} mph</div>
+                        <i class="fas fa-wind" style="font-size: 1.2rem; margin-bottom: 0.5rem;"></i>
+                        <div style="font-size: 0.8rem; opacity: 0.9;">Wind</div>
+                        <div style="font-weight: 600;">${Math.round(data.wind.speed * 2.237)} mph</div>
                     </div>
+                    <div>
+                        <i class="fas fa-compress-alt" style="font-size: 1.2rem; margin-bottom: 0.5rem;"></i>
+                        <div style="font-size: 0.8rem; opacity: 0.9;">Pressure</div>
+                        <div style="font-weight: 600;">${data.main.pressure} hPa</div>
+                    </div>
+                </div>
+                
+                <div style="
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 1.5rem;
+                    background: rgba(0,0,0,0.2);
+                    border-radius: 10px;
+                    padding: 1rem;
+                ">
+                    <div>
+                        <i class="fas fa-sun" style="color: #FFD700;"></i>
+                        <div style="font-size: 0.8rem; opacity: 0.9; margin-top: 0.3rem;">Sunrise</div>
+                        <div style="font-weight: 600;">${sunrise}</div>
+                    </div>
+                    <div>
+                        <i class="fas fa-moon" style="color: #E6E6FA;"></i>
+                        <div style="font-size: 0.8rem; opacity: 0.9; margin-top: 0.3rem;">Sunset</div>
+                        <div style="font-weight: 600;">${sunset}</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1.5rem; font-size: 0.8rem; opacity: 0.8;">
+                    <a href="https://cloudy-2cj.pages.dev/" target="_blank" style="color: white; text-decoration: none; display: inline-flex; align-items: center;">
+                        Powered by Cloudy <i class="fas fa-external-link-alt" style="margin-left: 0.3rem;"></i>
+                    </a>
                 </div>
             </div>
         `;
+
     } catch (error) {
         if (error.code === 1) { // GeolocationPositionError.PERMISSION_DENIED
             responseContainer.innerHTML = `
